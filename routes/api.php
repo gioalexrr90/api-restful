@@ -1,19 +1,27 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Buyer\BuyerController;
+use App\Http\Controllers\Category\CategoryController;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Seller\SellerController;
+use App\Http\Controllers\Transaction\TransactionController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+// Buyers
+Route::apiResource('buyers', BuyerController::class)->only('index', 'show');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Category
+Route::apiResource('categories', CategoryController::class)->except('create', 'edit');
+
+// Product
+Route::apiResource('products', ProductController::class)->only('index', 'show');
+
+// Transaction
+Route::apiResource('transactions', TransactionController::class)->only('index', 'show');
+
+// Seller
+Route::apiResource('sellers', SellerController::class)->except('create', 'edit');
+
+// User
+Route::apiResource('users', UserController::class)->except('create', 'edit');
