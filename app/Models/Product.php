@@ -11,8 +11,6 @@ class Product extends Model
 
     const IS_AVAILABLE = true;
 
-    protected $table = 'users';
-
     protected $fillable = [
         'name',
         'description',

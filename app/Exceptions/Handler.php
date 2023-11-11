@@ -2,7 +2,21 @@
 
 namespace App\Exceptions;
 
+use Exception;
+use Illuminate\Contracts\Queue\EntityNotFoundException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Request;
+use Illuminate\Support\ItemNotFoundException;
+use Illuminate\Validation\ValidationException;
+use Mockery\Exception\InvalidOrderException;
+use Spatie\FlareClient\Http\Exceptions\NotFound;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\ResolverNotFoundException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -23,8 +37,25 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (Exception $e, Request $request) {
+            if ($request->is('api/*')) {
+                if ($e instanceof ValidationException) {
+                    return response()->json([
+                        'message'=> $e->errors(),
+                        'code' => '422'
+                    ]);
+                }
+                if ($e instanceof NotFoundHttpException) {
+                    return response()->json([
+                        'message'=> $e->getMessage(),
+                        'code' => $e->getStatusCode(),
+                    ]);
+                }
+                return response()->json([
+                    'message'=> $e->getMessage(),
+                    'code' => $e->getCode(),
+                ]);
+            }
         });
     }
 }

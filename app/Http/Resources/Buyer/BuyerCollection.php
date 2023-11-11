@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Buyer;
 
+use App\Http\Resources\Buyer\BuyerResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class UserCollection extends ResourceCollection
+class BuyerCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -16,9 +17,9 @@ class UserCollection extends ResourceCollection
     {
         return [
             // Se llama a "collection" ya que "data" necesita recibir una colección de datos
-            'data' => UserResource::collection($this->collection),
+            'data' => $this->resource,
             'links' => [
-                'self' => url('/api/users/'),
+                'self' => url('/api/buyers/'),
             ]
         ];
     }

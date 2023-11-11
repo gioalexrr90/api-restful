@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Buyer;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Resources\Buyer\BuyerCollection;
+use App\Http\Resources\Buyer\BuyerResource;
+use App\Models\Buyer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class BuyerController extends Controller
 {
@@ -12,38 +15,20 @@ class BuyerController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        $buyers = Buyer::has('transactions')->get();
+        return BuyerCollection::make($buyers);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(String $id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        try {
+            $seller = Buyer::has('transactions')->findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Buyer with id '.$id.' not exit']);
+        }
+        return BuyerResource::make($seller);
     }
 }

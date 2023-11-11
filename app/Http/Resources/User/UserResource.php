@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,8 +18,8 @@ class UserResource extends JsonResource
             "id" => $this->resource->getRouteKey(),
             "name" => $this->resource->name,
             "email" => $this->resource->email,
-            "verified" => (string)  $this->resource->verified,
-            "admin" => (string) $this->resource->admin,
+            "verified" => $this->resource->verified,
+            "admin" => $this->resource->admin,
             "links" => [
                 "self" => url('/api/users/'.$this->resource->getRouteKey()),
             ]

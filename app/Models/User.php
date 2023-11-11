@@ -16,6 +16,7 @@ class User extends Authenticatable
     const IS_VERIFIED = true;
     const IS_ADMIN = false;
 
+    protected $table = 'users';
 
     protected $fillable = [
         'name',

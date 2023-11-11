@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Seller\SellerCollection;
+use App\Http\Resources\Seller\SellerResource;
+use App\Models\Seller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class SellerController extends Controller
@@ -12,38 +16,20 @@ class SellerController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        $sellers = Seller::has('products')->get();
+        return SellerCollection::make($sellers);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(String $id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        try {
+            $seller = Seller::has('products')->findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Seller with id '.$id.' not exit']);
+        }
+        return SellerResource::make($seller);
     }
 }

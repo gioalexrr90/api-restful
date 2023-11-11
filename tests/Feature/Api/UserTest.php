@@ -12,14 +12,14 @@ class UserTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function can_load_api_page()
+    public function api_esta_activa()
     {
         $response = $this->getJson('api/users/');
         $response ->assertStatus(200);
     }
 
     /** @test */
-    public function can_fetch_single_user()
+    public function busqueda_de_un_item()
     {
         $user = User::factory()->create();
         $response = $this->getJson('/api/users/'.$user->getRouteKey());
@@ -28,8 +28,8 @@ class UserTest extends TestCase
                 'id' => $user->getRouteKey(),
                 'name' => $user->name,
                 'email' => $user->email,
-                'verified' => $user->getRouteKey(),
-                'admin' => $user->admin,
+                'verified' => (int) $user->verified,
+                'admin' => (int) $user->admin,
                 'links' => [
                     'self' => url('/api/users/'.$user->getRouteKey()),
                 ]
@@ -37,10 +37,10 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function can_fetch_all_user()
+    public function mustra_todos_los_items()
     {
-        $this->withoutExceptionHandling();
-        $user = User::factory(3)->create();
+        $cantidadUsuarios = 3;
+        $user = User::factory($cantidadUsuarios)->create();
         $response = $this->getJson('/api/users/');
         $response->assertJson([]);
     }
