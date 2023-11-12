@@ -2,25 +2,24 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ApiResponse;
 use Exception;
-use Illuminate\Contracts\Queue\EntityNotFoundException;
+use Illuminate\Container\EntryNotFoundException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\ItemNotFoundException;
 use Illuminate\Validation\ValidationException;
-use Mockery\Exception\InvalidOrderException;
+use PHPUnit\Framework\MockObject\ReturnValueNotConfiguredException;
+use PHPUnit\TextUI\Configuration\IncludePathNotConfiguredException;
 use Spatie\FlareClient\Http\Exceptions\NotFound;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\ResolverNotFoundException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
-use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use ApiResponse;
     /**
      * The list of the inputs that are never flashed to the session on validation exceptions.
      *
@@ -39,22 +38,16 @@ class Handler extends ExceptionHandler
     {
         $this->renderable(function (Exception $e, Request $request) {
             if ($request->is('api/*')) {
+                if ($e->getPrevious() instanceof ModelNotFoundException) {
+                    return $this->failureResponse('ID not found', 404);
+                }
                 if ($e instanceof ValidationException) {
-                    return response()->json([
-                        'message'=> $e->errors(),
-                        'code' => '422'
-                    ]);
+                    return $this->failureResponse($e->errors());
                 }
                 if ($e instanceof NotFoundHttpException) {
-                    return response()->json([
-                        'message'=> $e->getMessage(),
-                        'code' => $e->getStatusCode(),
-                    ]);
+                    return $this->failureResponse($e->getMessage(), 404);
                 }
-                return response()->json([
-                    'message'=> $e->getMessage(),
-                    'code' => $e->getCode(),
-                ]);
+                return $this->failureResponse($e->getMessage());
             }
         });
     }

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Buyer;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\Http\Resources\Buyer\BuyerCollection;
 use App\Http\Resources\Buyer\BuyerResource;
 use App\Models\Buyer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class BuyerController extends Controller
+class BuyerController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class BuyerController extends Controller
     public function index()
     {
         $buyers = Buyer::has('transactions')->get();
-        return BuyerCollection::make($buyers);
+        return $this->successResponse(BuyerCollection::make($buyers));
     }
 
     /**
@@ -27,8 +27,8 @@ class BuyerController extends Controller
         try {
             $seller = Buyer::has('transactions')->findOrFail($id);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['message' => 'Buyer with id '.$id.' not exit']);
+            return $this->failureResponse('Buyer with id '.$id.' not exit', 404);
         }
-        return BuyerResource::make($seller);
+        return $this->successResponse(BuyerResource::make($seller));
     }
 }

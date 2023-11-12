@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserCollection;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return UserCollection::make(User::all());
+        return $this->successResponse(UserCollection::make(User::all()));
     }
 
     /**
@@ -32,7 +32,7 @@ class UserController extends Controller
 
 
         $user = User::create($campos);
-        return (new UserResource($user))->response()->setStatusCode(201);
+        return $this->successResponse(UserResource::make($user));
 
     }
 
@@ -41,7 +41,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return UserResource::make($user);
+        return $this->successResponse(UserResource::make($user));
     }
 
     /**
@@ -65,18 +65,18 @@ class UserController extends Controller
 
         if($request->admin and $request->admin == false){
             if(!$user->isVerified()){
-                return response()->json(['message' => 'Not authorized', 'code' => '401'], 401);
+                return $this->failureResponse('Not authorized', 401);
             }
             $user->admin = $request->admin;
         }
 
         if(!$user->isDirty()){
-            return response()->json(['error' => 'There are any changes', 'code' => 400], 400);
+            return $this->failureResponse('There are any changes', 400);
         }
 
         $user->save();
 
-        return UserResource::make($user);
+        return $this->successResponse(UserResource::make($user));
     }
 
     /**
@@ -85,6 +85,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return (new UserResource($user))->response()->setStatusCode(200);
+        return $this->successResponse(UserResource::make($user));
     }
 }

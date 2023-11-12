@@ -15,11 +15,17 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->resource->getRouteKey(),
-            "name" => $this->resource->name,
-            "email" => $this->resource->email,
-            "verified" => $this->resource->verified,
-            "admin" => $this->resource->admin,
+            "id" => $this->getRouteKey(),
+            "name" => $this->name,
+            "email" => $this->email,
+            "password" => $this->password,
+            "verified" => $this->verified,
+            "verification_token" => $this->verification_token,
+            "remember_token" => $this->remember_token,
+            "admin" => $this->admin,
+            "created_ad" => $this->created_at,
+            "updated_at" => $this->updated_at,
+            "deleted_at" => $this->deleted_at,
             "links" => [
                 "self" => url('/api/users/'.$this->resource->getRouteKey()),
             ]

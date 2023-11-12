@@ -14,6 +14,13 @@ class SellerResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id" => $this->getRouteKey(),
+            "name" => $this->name,
+            "email" => $this->email,
+            "links" => [
+                "self" => url('/api/sellers/'.$this->getRouteKey()),
+            ]
+        ];
     }
 }
