@@ -6,7 +6,9 @@ use App\Http\Controllers\ApiController;
 use App\Http\Resources\Buyer\BuyerCollection;
 use App\Http\Resources\Buyer\BuyerResource;
 use App\Models\Buyer;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BuyerController extends ApiController
 {
@@ -24,11 +26,7 @@ class BuyerController extends ApiController
      */
     public function show(String $id)
     {
-        try {
-            $seller = Buyer::has('transactions')->findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->failureResponse('Buyer with id '.$id.' not exit', 404);
-        }
-        return $this->successResponse(BuyerResource::make($seller));
+        $buyer = Buyer::has('transactions')->findOrFail($id);
+        return $this->successResponse(BuyerResource::make($buyer));
     }
 }

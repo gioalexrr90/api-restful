@@ -24,11 +24,7 @@ class SellerController extends ApiController
      */
     public function show(String $id)
     {
-        try {
-            $seller = Seller::has('products')->findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->failureResponse('Seller with id '.$id.' not exit', 404);
-        }
+        $seller = Seller::has('products')->findOrFail($id);
         return $this->successResponse(SellerResource::make($seller));
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Seller;
+namespace App\Http\Resources\Product;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class SellerCollection extends ResourceCollection
+class ProductCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -15,9 +15,9 @@ class SellerCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
-            'collection' => $this->resource,
-            'links' => [
-                'self' => url('/api/sellers/'),
+            "collection" => ProductResource::collection($this->collection),
+            'link' => [
+                'self' => url('/api/products/'),
             ]
         ];
     }

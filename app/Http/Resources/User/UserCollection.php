@@ -17,7 +17,7 @@ class UserCollection extends ResourceCollection
     {
         return [
             // Se llama a "collection" ya que "data" necesita recibir una colección de datos
-            'data' => UserResource::collection($this->collection),
+            'collection' => UserResource::collection($this->collection),
             'links' => [
                 'self' => url('/api/users/'),
             ]

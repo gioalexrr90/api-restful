@@ -45,6 +45,9 @@ class Handler extends ExceptionHandler
                     return $this->failureResponse($e->errors());
                 }
                 if ($e instanceof NotFoundHttpException) {
+                    if ($e->getPrevious() instanceof ModelNotFoundException) {
+                        return $this->failureResponse('ID not found', 404);
+                    }
                     return $this->failureResponse($e->getMessage(), 404);
                 }
                 return $this->failureResponse($e->getMessage());

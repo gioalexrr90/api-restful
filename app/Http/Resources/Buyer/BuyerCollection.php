@@ -17,7 +17,7 @@ class BuyerCollection extends ResourceCollection
     {
         return [
             // Se llama a "collection" ya que "data" necesita recibir una colección de datos
-            'data' => $this->resource,
+            'collection' => $this->resource,
             'links' => [
                 'self' => url('/api/buyers/'),
             ]

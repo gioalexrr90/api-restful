@@ -15,7 +15,7 @@ class CategoryCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
-            'id' => CategoryResource::collection($this->collection),
+            'collection' => CategoryResource::collection($this->collection),
             'link' => [
                 'self' => url('/api/categories/'),
             ]
