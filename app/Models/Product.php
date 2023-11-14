@@ -23,6 +23,10 @@ class Product extends Model
         'seller_id',
     ];
 
+    protected $hidden = [
+        'pivot',
+    ];
+
     public function product_is_available()
     {
         return $this->status == Product::IS_AVAILABLE;

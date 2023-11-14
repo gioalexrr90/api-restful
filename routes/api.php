@@ -5,9 +5,18 @@ use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Buyer\BuyerProductController;
 use App\Http\Controllers\Buyer\BuyerSellerController;
 use App\Http\Controllers\Buyer\BuyerTransactionController;
+use App\Http\Controllers\Category\CategoryBuyerController;
 use App\Http\Controllers\Category\CategoryController;
+use App\Http\Controllers\Category\CategoryProductController;
+use App\Http\Controllers\Category\CategorySellerController;
+use App\Http\Controllers\Category\CategoryTransactionController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Product\ProductTransactionController;
+use App\Http\Controllers\Seller\SellerBuyerController;
+use App\Http\Controllers\Seller\SellerCategoryController;
 use App\Http\Controllers\Seller\SellerController;
+use App\Http\Controllers\Seller\SellerProductController;
+use App\Http\Controllers\Seller\SellerTransactionController;
 use App\Http\Controllers\Transaction\TransactionCategoryController;
 use App\Http\Controllers\Transaction\TransactionController;
 use App\Http\Controllers\Transaction\TransactionSellerController;
@@ -23,9 +32,14 @@ Route::apiResource('buyers.categories', BuyerCategoryController::class)->only('i
 
 // Category
 Route::apiResource('categories', CategoryController::class)->except('create', 'edit');
+Route::apiResource('categories.products', CategoryProductController::class)->only('index');
+Route::apiResource('categories.sellers', CategorySellerController::class)->only('index');
+Route::apiResource('categories.transactions', CategoryTransactionController::class)->only('index');
+Route::apiResource('categories.buyers', CategoryBuyerController::class)->only('index');
 
 // Product
 Route::apiResource('products', ProductController::class)->only('index', 'show');
+Route::apiResource('products.transactions', ProductTransactionController::class)->only('index');
 
 // Transaction
 Route::apiResource('transactions', TransactionController::class)->only('index', 'show');
@@ -34,6 +48,11 @@ Route::apiResource('transactions.sellers', TransactionSellerController::class)->
 
 // Seller
 Route::apiResource('sellers', SellerController::class)->except('create', 'edit');
+Route::apiResource('sellers.products', SellerProductController::class)->except('show');
+Route::apiResource('sellers.transactions', SellerTransactionController::class)->only('index');
+Route::apiResource('sellers.categories', SellerCategoryController::class)->only('index');
+Route::apiResource('sellers.buyers', SellerBuyerController::class)->only('index');
+
 
 // User
 Route::apiResource('users', UserController::class)->except('create', 'edit');
