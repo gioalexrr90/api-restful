@@ -64,6 +64,12 @@ class SellerProductController extends ApiController
             }
         }
 
+        if($request->file('image')){
+            Storage::disk('images')->delete($product->image);
+            $file = $request->file('image');
+            $file->move(public_path('img'), $file->getClientOriginalName());
+        }
+
         // Se valida que se haya hecho algun cambio
         if ($product->isClean()) {
             return $this->failureResponse('Any chaneges register, you must update at least one changes', 422);
@@ -81,7 +87,7 @@ class SellerProductController extends ApiController
     {
         $this->sellerValidatio($seller, $product);
 
-        Storage::delete(public_path('img') . $product->image);
+        Storage::disk('images')->delete($product->image);
 
         $product->delete();
         return $this->successResponse($product);

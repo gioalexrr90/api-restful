@@ -28,6 +28,12 @@ class DatabaseSeeder extends Seeder
 
         DB::table('category_product')->truncate();
 
+        // Evita enviar correos a las instancias creadas por el seeder
+        User::flushEventListeners();
+        Category::flushEventListeners();
+        Product::flushEventListeners();
+        Transaction::flushEventListeners();
+
         $candidadUsuarios = 50;
         $cantidadCategorias = 30;
         $cantidadProductos = 30;

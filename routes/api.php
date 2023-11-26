@@ -62,3 +62,5 @@ Route::apiResource('sellers.buyers', SellerBuyerController::class)->only('index'
 
 // User
 Route::apiResource('users', UserController::class)->except('create', 'edit');
+Route::get('users/verify/{token}', [UserController::class, 'verify'])->name('verify');
+Route::get('users/{user}/resend', [UserController::class, 'resend'])->name('resend');

@@ -7,7 +7,9 @@ use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserCollection;
 use App\Http\Resources\User\UserResource;
+use App\Mail\UserCreated;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends ApiController
 {
@@ -16,7 +18,7 @@ class UserController extends ApiController
      */
     public function index()
     {
-        return $this->successResponse(UserCollection::make(User::all()));
+        return $this->successResponse(User::all());
     }
 
     /**
@@ -32,7 +34,7 @@ class UserController extends ApiController
 
 
         $user = User::create($campos);
-        return $this->successResponse(UserResource::make($user));
+        return $this->successResponse($user, 201);
 
     }
 
@@ -41,7 +43,7 @@ class UserController extends ApiController
      */
     public function show(User $user)
     {
-        return $this->successResponse(UserResource::make($user));
+        return $this->successResponse($user);
     }
 
     /**
@@ -76,7 +78,7 @@ class UserController extends ApiController
 
         $user->save();
 
-        return $this->successResponse(UserResource::make($user));
+        return $this->successResponse($user);
     }
 
     /**
@@ -85,6 +87,28 @@ class UserController extends ApiController
     public function destroy(User $user)
     {
         $user->delete();
-        return $this->successResponse(UserResource::make($user));
+        return $this->successResponse($user);
+    }
+
+    public function verify($token)
+    {
+        $user = User::where('verification_token' , $token)->firstOrFail();
+        $user->verified = true;
+        $user->verification_token = false;
+
+        $user->save();
+
+        return $this->successResponse('User verified.');
+    }
+
+    public function resend(User $user)
+    {
+        if($user->isVerified()){
+            return $this->failureResponse('This user is verified now.', 409);
+        }
+
+        Mail::to($user)->send(new UserCreated($user));
+
+        return $this->successResponse('Vertfiication email was re-sent.');
     }
 }

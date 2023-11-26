@@ -14,7 +14,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
-    const IS_VERIFIED = true;
+    const IS_VERIFIED = false;
     const IS_ADMIN = false;
 
     protected $table = 'users';
@@ -28,6 +28,12 @@ class User extends Authenticatable
         'verified',
         'verification_token',
         'admin',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'verification_token',
     ];
 
     public function setNameAttribute($valor)
@@ -45,20 +51,14 @@ class User extends Authenticatable
         return ucwords($valor);
     }
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-        'verification_token',
-    ];
-
     public function isVerified()
    {
-    return $this->verified = User::IS_VERIFIED;
+    return $this->verified = !User::IS_VERIFIED;
    }
 
    public function isAdministrator()
    {
-    return $this->admin = User::IS_ADMIN;
+    return $this->admin = !User::IS_ADMIN;
    }
 
    public static function generateVerificationToken()
