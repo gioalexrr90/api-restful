@@ -18,7 +18,8 @@ class UserController extends ApiController
      */
     public function index()
     {
-        return $this->successResponse(User::all());
+        return $this->showAll(User::all());
+        //return (new UserCollection($users));
     }
 
     /**
@@ -34,7 +35,7 @@ class UserController extends ApiController
 
 
         $user = User::create($campos);
-        return $this->successResponse($user, 201);
+        return $this->showOne(new UserResource($user), 201);
 
     }
 
@@ -43,7 +44,7 @@ class UserController extends ApiController
      */
     public function show(User $user)
     {
-        return $this->successResponse($user);
+        return $this->showOne(new UserResource($user));
     }
 
     /**
@@ -67,18 +68,18 @@ class UserController extends ApiController
 
         if($request->admin and $request->admin == false){
             if(!$user->isVerified()){
-                return $this->failureResponse('Not authorized', 401);
+                return $this->errorResponse('Not authorized', 401);
             }
             $user->admin = $request->admin;
         }
 
         if(!$user->isDirty()){
-            return $this->failureResponse('There are any changes', 400);
+            return $this->errorResponse('There are any changes', 400);
         }
 
         $user->save();
 
-        return $this->successResponse($user);
+        return $this->showOne(new UserResource($user));
     }
 
     /**
@@ -87,7 +88,7 @@ class UserController extends ApiController
     public function destroy(User $user)
     {
         $user->delete();
-        return $this->successResponse($user);
+        return $this->showOne(new UserResource($user));
     }
 
     public function verify($token)
@@ -98,17 +99,17 @@ class UserController extends ApiController
 
         $user->save();
 
-        return $this->successResponse('User verified.');
+        return $this->showMessage('User verified.');
     }
 
     public function resend(User $user)
     {
         if($user->isVerified()){
-            return $this->failureResponse('This user is verified now.', 409);
+            return $this->errorResponse('This user is verified now.', 409);
         }
 
         Mail::to($user)->send(new UserCreated($user));
 
-        return $this->successResponse('Vertfiication email was re-sent.');
+        return $this->showMessage('Vertfiication email was re-sent.');
     }
 }

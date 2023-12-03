@@ -12,20 +12,19 @@ class UserResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    public static $wrap = false;
+
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->getRouteKey(),
-            "name" => $this->name,
-            "email" => $this->email,
-            "password" => $this->password,
-            "verified" => $this->verified,
-            "verification_token" => $this->verification_token,
-            "remember_token" => $this->remember_token,
-            "admin" => $this->admin,
-            "created_ad" => $this->created_at,
-            "updated_at" => $this->updated_at,
-            "deleted_at" => $this->deleted_at,
+            "identificador" => (int) $this->getRouteKey(),
+            "nombre" => (string) $this->name,
+            "correo" => (string) $this->email,
+            "estaVerificado" => (bool) $this->verified,
+            "esAdministrador" => (bool) $this->admin,
+            "fechaCreacion" => (string) $this->created_at,
+            "fechaActualizacion" => (string) $this->updated_at,
+            "fechaEliminacion" => isset($this->deleted_at) ? (string) $this->deleted_at : null,
             "links" => [
                 "self" => url('/api/users/'.$this->resource->getRouteKey()),
             ]

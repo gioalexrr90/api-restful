@@ -39,18 +39,18 @@ class Handler extends ExceptionHandler
         $this->renderable(function (Exception $e, Request $request) {
             if ($request->is('api/*')) {
                 if ($e->getPrevious() instanceof ModelNotFoundException) {
-                    return $this->failureResponse('ID not found', 404);
+                    return $this->errorResponse('ID not found', 404);
                 }
                 if ($e instanceof ValidationException) {
-                    return $this->failureResponse($e->errors());
+                    return $this->errorResponse($e->errors());
                 }
                 if ($e instanceof NotFoundHttpException) {
                     if ($e->getPrevious() instanceof ModelNotFoundException) {
-                        return $this->failureResponse('ID not found', 404);
+                        return $this->errorResponse('ID not found', 404);
                     }
-                    return $this->failureResponse($e->getMessage(), 404);
+                    return $this->errorResponse($e->getMessage(), 404);
                 }
-                return $this->failureResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage());
             }
         });
     }
