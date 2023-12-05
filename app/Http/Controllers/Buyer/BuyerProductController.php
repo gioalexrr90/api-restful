@@ -15,10 +15,7 @@ class BuyerProductController extends ApiController
     {
         $product = $buyer->transactions()->with('product')->get()->pluck('product');
         //dd($product);
-        if (!empty($product->value('id'))) {
-            return $this->successResponse(BuyerProductResource::collection($product));
-        } else {
-            return $this->failureResponse('ID not Found', 404);
-        }
+        return $this->showAll($product);
+
     }
 }

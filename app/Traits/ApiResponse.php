@@ -2,8 +2,9 @@
 
 namespace App\Traits;
 
-use Illuminate\Database\Eloquent\Collection;
+//use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 trait ApiResponse
 {
@@ -21,23 +22,25 @@ trait ApiResponse
         ], $code);
     }
 
-    protected function showAll(Collection $collection, $code = 200)
+    protected function showAll(Collection $collection, int $code = 200)
     {
         if ($collection->isEmpty()) {
-            return $this->successResponse($collection, $code);
+            return $this->successResponse(['data' => $collection], $code);
         }
         $transformer = $collection->first()->transformer;
+        $collection = $this->sortData($collection);
         $collection = $this->transformData($collection, $transformer);
-        //$collection = $this->sortData($collection);
         return $this->successResponse($collection, $code);
     }
 
-    protected function showOne($instance, $code = 200)
+    protected function showOne(Model $instance, int $code = 200)
     {
-        return $this->successResponse(['data' => $instance], $code);
+        $transformer = $instance->transformer;
+        $instance = $this->transformData($instance, $transformer);
+        return $this->successResponse($instance, $code);
     }
 
-    protected function showMessage($message, $code = 200)
+    protected function showMessage($message, int $code = 200)
     {
         return $this->successResponse(['data' => $message], $code);
     }

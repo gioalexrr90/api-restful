@@ -15,6 +15,6 @@ class TransactionSellerController extends ApiController
     {
         // Se obtiene el venderdor del productor de esta transacción
         $seller = $transaction->product->seller;
-        return $this->successResponse(TransactionSellerResource::make($seller));
+        return $this->showOne($seller);
     }
 }

@@ -17,10 +17,10 @@ class BuyerTransactionController extends ApiController
     public function index(Buyer $buyer)
     {
         $transactions = $buyer->transactions;
-        if (!empty($transactions->value('id'))) {
-            return $this->successResponse(BuyerTransactionResource::collection($transactions));
+        if (!empty($transactions)) {
+            return $this->showAll($transactions);
         } else {
-            return $this->failureResponse('ID not Found', 404);
+            return $this->errorResponse('ID not Found', 404);
         }
     }
 }

@@ -18,7 +18,7 @@ class UserController extends ApiController
      */
     public function index()
     {
-        return $this->showAll(User::all());
+        return $this->showAll(User::all()->dd());
         //return (new UserCollection($users));
     }
 
@@ -35,7 +35,7 @@ class UserController extends ApiController
 
 
         $user = User::create($campos);
-        return $this->showOne(new UserResource($user), 201);
+        return $this->showOne($user, 201);
 
     }
 
@@ -44,7 +44,7 @@ class UserController extends ApiController
      */
     public function show(User $user)
     {
-        return $this->showOne(new UserResource($user));
+        return $this->showOne($user);
     }
 
     /**
@@ -79,7 +79,7 @@ class UserController extends ApiController
 
         $user->save();
 
-        return $this->showOne(new UserResource($user));
+        return $this->showOne($user);
     }
 
     /**
@@ -88,7 +88,7 @@ class UserController extends ApiController
     public function destroy(User $user)
     {
         $user->delete();
-        return $this->showOne(new UserResource($user));
+        return $this->showOne($user);
     }
 
     public function verify($token)

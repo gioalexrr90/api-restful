@@ -14,7 +14,7 @@ class TransactionController extends ApiController
      */
     public function index()
     {
-        return $this->successResponse(TransactionCollection::make(Transaction::all()));
+        return $this->showAll(Transaction::all());
     }
 
     /**
@@ -22,6 +22,6 @@ class TransactionController extends ApiController
      */
     public function show(Transaction $transaction)
     {
-        return $this->successResponse(TransactionResource::make($transaction));
+        return $this->showOne($transaction);
     }
 }

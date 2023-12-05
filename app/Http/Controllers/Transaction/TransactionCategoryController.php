@@ -14,6 +14,6 @@ class TransactionCategoryController extends ApiController
     public function index(Transaction $transaction)
     {
         $categories = $transaction->product->categories;
-        return $this->successResponse(TransactionCategoryResource::collection($categories));
+        return $this->showAll($categories);
     }
 }

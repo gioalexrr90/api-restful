@@ -19,12 +19,10 @@ class BuyerCategoryController extends ApiController
             ->get()
             ->pluck("product.categories")
             ->collapse()
-            ->unique('id');
+            ->unique('id')
+            ->values();
 
-        if (!empty($categories->value("id"))) {
-            return $this->successResponse(BuyerCategoryResource::collection($categories));
-        } else {
-            return $this->failureResponse('ID not found', 404);
-        }
+        return $this->showAll($categories);
+
     }
 }
