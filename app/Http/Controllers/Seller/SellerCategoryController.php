@@ -20,8 +20,8 @@ class SellerCategoryController extends ApiController
 
         //dd($categories);
         if (!$categories->unique()->value('id')) {
-            return $this->failureResponse('ID not found', 404);
+            return $this->errorResponse('ID not found', 404);
         }
-        return $this->successResponse($categories);
+        return $this->showAll($categories);
     }
 }

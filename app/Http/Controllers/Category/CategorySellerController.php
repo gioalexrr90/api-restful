@@ -21,6 +21,6 @@ class CategorySellerController extends ApiController
             ->pluck('seller')
             ->unique();
 
-        return $this->successResponse(CategorySellerCollection::make($sellers));
+        return $this->showAll($sellers);
     }
 }

@@ -20,8 +20,8 @@ class ProductBuyerController extends ApiController
 
         //dd($buyers);
         if ($buyers->value('id') == null) {
-            return $this->failureResponse('Buyer not found');
+            return $this->errorResponse('Buyer not found');
         }
-        return $this->successResponse($buyers);
+        return $this->showAll($buyers);
     }
 }

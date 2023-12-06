@@ -20,7 +20,7 @@ class CategoryController extends ApiController
     public function index()
     {
         //return CategoryCollection::make(Category::all())->response()->setStatusCode(200);
-        return $this->successResponse(CategoryCollection::make(Category::all()));
+        return $this->showAll(Category::all());
     }
 
     /**
@@ -29,7 +29,7 @@ class CategoryController extends ApiController
     public function store(StoreCategoryRequest $request)
     {
         $category = Category::create($request->all());
-        return $this->successResponse(CategoryResource::make($category));
+        return $this->showOne($category);
     }
 
     /**
@@ -42,12 +42,12 @@ class CategoryController extends ApiController
 
         if($category->isClean())
         {
-            return $this->failureResponse('There are not any changes');
+            return $this->showMessage('There are not any changes');
         }
 
         $category->save();
 
-        return $this->successResponse(CategoryResource::make($category));
+        return $this->showOne($category);
     }
 
     /**
@@ -55,7 +55,7 @@ class CategoryController extends ApiController
      */
     public function show(Category $category)
     {
-        return $this->successResponse(CategoryResource::make($category));
+        return $this->showOne($category);
     }
 
     /**
@@ -64,6 +64,6 @@ class CategoryController extends ApiController
     public function destroy(Category $category)
     {
         $category->delete();
-        return $this->successResponse(CategoryResource::make($category));
+        return $this->showOne($category);
     }
 }

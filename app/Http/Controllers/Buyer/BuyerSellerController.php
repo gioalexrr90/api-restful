@@ -21,9 +21,9 @@ class BuyerSellerController extends ApiController
             ->unique('id'); // no se repiten y se compraran con el id
 
         if (!empty($sellers->value("id"))) {
-            return $this->successResponse(BuyerSellerResource::collection($sellers));
+            return $this->showAll($sellers);
         } else {
-            return $this->failureResponse('ID not found', 404);
+            return $this->errorResponse('ID not found', 404);
         }
     }
 }

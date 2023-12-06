@@ -19,6 +19,6 @@ class CategoryTransactionController extends ApiController
             ->pluck('transactions')
             ->collapse();
 
-        return $this->successResponse($transactions);
+        return $this->showAll($transactions);
     }
 }

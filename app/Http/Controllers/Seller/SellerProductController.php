@@ -20,7 +20,7 @@ class SellerProductController extends ApiController
     public function index(Seller $seller)
     {
         $products = $seller->products;
-        return $this->successResponse($products);
+        return $this->showAll($products);
     }
 
     /**
@@ -38,7 +38,7 @@ class SellerProductController extends ApiController
 
         $product = Product::create($data);
 
-        return $this->successResponse($product, 201);
+        return $this->showAll($product, 201);
     }
 
     /**
@@ -60,7 +60,7 @@ class SellerProductController extends ApiController
             $product->status = $request->status;
 
             if ($product->product_is_available() && $product->categories()->count() == 0) {
-                return $this->failureResponse('Available product must have at least one category', 409);
+                return $this->errorResponse('Available product must have at least one category', 409);
             }
         }
 
@@ -72,12 +72,12 @@ class SellerProductController extends ApiController
 
         // Se valida que se haya hecho algun cambio
         if ($product->isClean()) {
-            return $this->failureResponse('Any chaneges register, you must update at least one changes', 422);
+            return $this->errorResponse('Any chaneges register, you must update at least one changes', 422);
         }
 
         $product->save();
 
-        return $this->successResponse($product);
+        return $this->showOne($product);
     }
 
     /**
@@ -90,7 +90,7 @@ class SellerProductController extends ApiController
         Storage::disk('images')->delete($product->image);
 
         $product->delete();
-        return $this->successResponse($product);
+        return $this->showOne($product);
     }
 
     protected function sellerValidatio(Seller $seller, Product $product)

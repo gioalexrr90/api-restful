@@ -14,6 +14,6 @@ class CategoryProductController extends ApiController
     public function index(Category $category)
     {
         $products = $category->products;
-        return $this->successResponse(CategoryProductResource::collection($products));
+        return $this->showAll($products);
     }
 }

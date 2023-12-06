@@ -16,8 +16,8 @@ class ProductTransactionController extends ApiController
     {
         $transactions = $product->transactions()->get();
         if ($transactions->value('id') == null) {
-            return $this->failureResponse("Product not found");
+            return $this->errorResponse("Product not found");
         }
-        return $this->successResponse($transactions);
+        return $this->showAll($transactions);
     }
 }

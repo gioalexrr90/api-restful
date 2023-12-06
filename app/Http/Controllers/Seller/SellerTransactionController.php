@@ -21,8 +21,8 @@ class SellerTransactionController extends ApiController
             ->collapse();
 
         if (!$transactions->unique()->value('id')) {
-            return $this->failureResponse('ID not found', 404);
+            return $this->errorResponse('ID not found', 404);
         }
-        return $this->successResponse($transactions);
+        return $this->showAll($transactions);
     }
 }

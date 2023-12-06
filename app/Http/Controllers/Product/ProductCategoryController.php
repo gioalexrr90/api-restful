@@ -15,7 +15,7 @@ class ProductCategoryController extends ApiController
     public function index(Product $product)
     {
         $categories = $product->categories()->get();
-        return $this->successResponse($categories);
+        return $this->showAll($categories);
     }
 
     /**
@@ -27,7 +27,7 @@ class ProductCategoryController extends ApiController
         $product->categories()->syncWithoutDetaching($category->id);
         $categories = $product->categories()->get();
 
-        return $this->successResponse($categories);
+        return $this->showAll($categories);
     }
 
     /**
@@ -36,11 +36,11 @@ class ProductCategoryController extends ApiController
     public function destroy(Product $product, Category $category)
     {
         if (!$product->categories()->find($category->id)) {
-            return $this->failureResponse('Category id in products not found');
+            return $this->errorResponse('Category id in products not found');
         }
         $product->categories()->detach($category->id);
         $categories = $product->categories()->get();
 
-        return $this->successResponse($categories);
+        return $this->showAll($categories);
     }
 }

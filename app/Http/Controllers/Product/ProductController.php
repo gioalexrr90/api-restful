@@ -16,7 +16,7 @@ class ProductController extends ApiController
      */
     public function index()
     {
-        return $this->successResponse(ProductCollection::make(Product::all()));
+        return $this->showAll(Product::all());
     }
 
     /**
@@ -24,6 +24,6 @@ class ProductController extends ApiController
      */
     public function show(Product $product)
     {
-        return $this->successResponse(ProductResource::make($product));
+        return $this->showOne($product);
     }
 }

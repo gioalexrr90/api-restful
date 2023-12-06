@@ -18,23 +18,23 @@ class ProductBuyerTransactionController extends ApiController
     public function store(StoreProductBuyerTransactionRequest $request, Product $product, User $buyer)
     {
         if ($buyer->id == $product->seller->id) {
-            return $this->failureResponse("Buyer and Seller must be differents.", 409);
+            return $this->errorResponse("Buyer and Seller must be differents.", 409);
         }
 
         if (!$buyer->isVerified()) {
-            return $this->failureResponse("Buyer must be an verified user.", 409);
+            return $this->errorResponse("Buyer must be an verified user.", 409);
         }
 
         if (!$product->seller->isVerified()) {
-            return $this->failureResponse("Seller must be an verified user.", 409);
+            return $this->errorResponse("Seller must be an verified user.", 409);
         }
 
         if (!$product->product_is_available()) {
-            return $this->failureResponse("Product is not available.", 409);
+            return $this->errorResponse("Product is not available.", 409);
         }
 
         if ($product->quantity < $request->quantity) {
-            return $this->failureResponse("Product has not the quantity that you requires.", 409);
+            return $this->errorResponse("Product has not the quantity that you requires.", 409);
         }
 
         return DB::transaction(function () use ($request, $product, $buyer) {
@@ -48,7 +48,7 @@ class ProductBuyerTransactionController extends ApiController
             ]);
 
             //dd($transactions);
-            return $this->successResponse($transactions, 201);
+            return $this->showAll($transactions, 201);
         });
     }
 }

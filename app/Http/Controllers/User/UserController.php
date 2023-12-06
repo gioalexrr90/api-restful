@@ -18,7 +18,7 @@ class UserController extends ApiController
      */
     public function index()
     {
-        return $this->showAll(User::all()->dd());
+        return $this->showAll(User::all());
         //return (new UserCollection($users));
     }
 

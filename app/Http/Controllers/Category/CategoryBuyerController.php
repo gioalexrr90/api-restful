@@ -21,6 +21,6 @@ class CategoryBuyerController extends ApiController
             ->pluck('buyer')
             ->unique('id');
 
-        return $this->successResponse($buyers);
+        return $this->showAll($buyers);
     }
 }

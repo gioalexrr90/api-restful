@@ -22,10 +22,10 @@ class SellerBuyerController extends ApiController
             ->unique();
 
         if (!$buyers->value('id')) {
-            return $this->failureResponse('ID not found', 404);
+            return $this->errorResponse('ID not found', 404);
         }
 
         //dd($buyers);
-        return $this->successResponse($buyers);
+        return $this->showAll($buyers);
     }
 }
