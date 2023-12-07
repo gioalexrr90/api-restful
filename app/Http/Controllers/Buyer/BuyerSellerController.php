@@ -3,10 +3,7 @@
 namespace App\Http\Controllers\Buyer;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\Buyer\BuyerSellerResource;
 use App\Models\Buyer;
-use Exception;
-use Illuminate\Http\Request;
 
 class BuyerSellerController extends ApiController
 {

@@ -3,10 +3,7 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\Seller\SellerCollection;
-use App\Http\Resources\Seller\SellerResource;
 use App\Models\Seller;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SellerController extends ApiController
 {

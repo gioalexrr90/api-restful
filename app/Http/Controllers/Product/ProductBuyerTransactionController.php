@@ -7,7 +7,6 @@ use App\Http\Requests\Product\StoreProductBuyerTransactionRequest;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductBuyerTransactionController extends ApiController

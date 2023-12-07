@@ -3,10 +3,7 @@
 namespace App\Http\Controllers\Buyer;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Buyer\BuyerCategoryResource;
 use App\Models\Buyer;
-use Illuminate\Http\Request;
 
 class BuyerCategoryController extends ApiController
 {

@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Category\CategorySellerCollection;
-use App\Http\Resources\Category\CategorySellerResource;
 use App\Models\Category;
 
 class CategorySellerController extends ApiController

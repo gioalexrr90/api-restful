@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Transaction;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\Transaction\TransactionSellerResource;
 use App\Models\Transaction;
 
 class TransactionSellerController extends ApiController

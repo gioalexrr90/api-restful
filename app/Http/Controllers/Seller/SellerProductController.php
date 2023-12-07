@@ -8,7 +8,6 @@ use App\Http\Requests\Seller\UpdateSellerProductRequest;
 use App\Models\Product;
 use App\Models\Seller;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 

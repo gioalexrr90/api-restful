@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Buyer;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Buyer\BuyerTransactionResource;
 use App\Models\Buyer;
 
 use function PHPUnit\Framework\isEmpty;
