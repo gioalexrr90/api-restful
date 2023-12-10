@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Validation\ValidationException;
 
 class TransformInput
 {
@@ -13,8 +13,30 @@ class TransformInput
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, $transformer)
     {
-        return $next($request);
+        $transformedInput = [];
+        foreach ($request->request->all() as $input => $value) {
+            $transformedInput[$transformer::originalAttribute($input)] = $value;
+        }
+        $request->replace($transformedInput);
+
+        $response = $next($request);
+
+        // Estos errores son normales, el programa si funciona.
+        if (isset($response->exception) && $response->exception instanceof ValidationException) {
+            $data = $response->exception->errors();
+
+            $transformedErrors = [];
+            foreach ($data as $field => $error) {
+                $transformedField = $transformer::transformedAttribute($field);
+                $transformedErrors[$transformedField] = str_replace($field, $transformedField, $error);
+
+            }
+            $data = $transformedErrors;
+            $response->setData($data);
+        }
+
+        return $response;
     }
 }

@@ -6,10 +6,17 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Models\Category;
-
+use App\Transformers\CategoryTransformer;
 
 class CategoryController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('transform.input:' . CategoryTransformer::class)->only(['store']);
+    }
+
     //use ApiResponse;
     /**
      * Display a listing of the resource.
