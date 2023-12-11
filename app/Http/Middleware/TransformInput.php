@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Exception;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -34,7 +36,7 @@ class TransformInput
 
             }
             $data = $transformedErrors;
-            $response->setData($data);
+            $response->setData($data); 
         }
 
         return $response;

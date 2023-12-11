@@ -25,6 +25,8 @@ use App\Http\Controllers\Transaction\TransactionController;
 use App\Http\Controllers\Transaction\TransactionSellerController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Passport\Http\Controllers\AccessTokenController;
+use Laravel\Passport\Passport;
 
 // Buyers
 Route::apiResource('buyers', BuyerController::class)->only('index', 'show');
@@ -64,3 +66,13 @@ Route::apiResource('sellers.buyers', SellerBuyerController::class)->only('index'
 Route::apiResource('users', UserController::class)->except('create', 'edit');
 Route::get('users/verify/{token}', [UserController::class, 'verify'])->name('verify');
 Route::get('users/{user}/resend', [UserController::class, 'resend'])->name('resend');
+
+Route::group([
+    null,
+    'prefix' => 'oauth/api',
+    'namespace' => '\Laravel\Passport\Http\Controllers',
+], function () {
+    // Passport routes...
+    Route::post('oauth/token', [AccessTokenController::class, 'issueToken']);
+});
+Route::post('oauth/token', [AccessTokenController::class, 'issueToken']);
