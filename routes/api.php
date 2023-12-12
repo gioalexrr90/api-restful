@@ -67,12 +67,4 @@ Route::apiResource('users', UserController::class)->except('create', 'edit');
 Route::get('users/verify/{token}', [UserController::class, 'verify'])->name('verify');
 Route::get('users/{user}/resend', [UserController::class, 'resend'])->name('resend');
 
-Route::group([
-    null,
-    'prefix' => 'oauth/api',
-    'namespace' => '\Laravel\Passport\Http\Controllers',
-], function () {
-    // Passport routes...
-    Route::post('oauth/token', [AccessTokenController::class, 'issueToken']);
-});
 Route::post('oauth/token', [AccessTokenController::class, 'issueToken']);

@@ -7,6 +7,10 @@ use App\Models\Transaction;
 
 class TransactionSellerController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
     /**
      * Display a listing of the resource.
      */
